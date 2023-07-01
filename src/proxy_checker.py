@@ -21,7 +21,7 @@ class ProxyChecker:
         except (requests.exceptions.RequestException, requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
             print(f"Proxy {proxy} failed.")
 
-        self.counter.increment()  # increment the counter
+        self.counter.increment() 
         print(f"Checked {self.counter.value()} out of {self.total_proxies}")
 
         return proxy if status == 200 else None
