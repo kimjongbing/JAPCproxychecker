@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, Mock
 from src.proxy_checker import ProxyChecker
 
+
 class TestProxyChecker(unittest.TestCase):
     def setUp(self):
         self.proxies = ["proxy1", "proxy2", "proxy3"]
