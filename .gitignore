@@ -4,3 +4,4 @@ proxies.txt
 __pycache__/
 proxyfolder/
 test/__pycache__/
+.DS_Store
