@@ -3,4 +3,4 @@ http2.txt
 proxies.txt
 __pycache__/
 proxyfolder/
-test/__pycache__/test_proxy_checker.cpython-37.pyc
+test/__pycache__/
