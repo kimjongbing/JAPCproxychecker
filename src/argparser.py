@@ -16,4 +16,12 @@ def parse_args():
         default=None,
         help="Optional output file",
     )
+
+    parser.add_argument(
+        "-j",
+        "--proxy_sources_file",
+        dest="json_file_path",
+        default=None,
+        help="Json file that has the proxy sources urls"
+    )
     return parser.parse_args()
