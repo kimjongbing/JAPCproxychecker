@@ -6,4 +6,4 @@ proxyfolder/
 test/__pycache__/
 test/__pycache__/*.pyc
 .DS_Store
-test/__pycache__/test_proxy_checker.cpython-37.pyc
+
