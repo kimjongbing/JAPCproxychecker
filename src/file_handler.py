@@ -18,16 +18,18 @@ class FileHandler:
     def read_json_file(json_file_path):
         with open(json_file_path, "r") as json_file:
             return json.load(json_file)
-    
+
     @staticmethod
     def get_proxy_sources_from_json(json_file_path):
         data = FileHandler.read_json_file(json_file_path)
         return data["sources"]
 
-
     @staticmethod
     def handle_file_paths(
-        input_file_path, output_file_path, default_input_directory, default_output_directory
+        input_file_path,
+        output_file_path,
+        default_input_directory,
+        default_output_directory,
     ):
         full_input_path = directory_handler.get_full_file_path(
             input_file_path, default_input_directory
