@@ -1,17 +1,14 @@
-from src import (
-    parse_args,
-    handle_config,
-    handle_file_paths,
-    write_proxies_to_file,
-    handle_proxies,
-)
+from src.file_handler import FileHandler
+from src.config_handler import handle_config
+from src.proxy_handler import handle_proxies
+from src.argparser import parse_args
 
 
 def main(input_file_path, output_file_path, json_file_path):
     default_input_directory, default_output_directory, proxies = handle_config(
         json_file_path
     )
-    full_input_path, full_output_path = handle_file_paths(
+    full_input_path, full_output_path = FileHandler.handle_file_paths(
         input_file_path,
         output_file_path,
         default_input_directory,
@@ -20,9 +17,9 @@ def main(input_file_path, output_file_path, json_file_path):
     good_proxies = handle_proxies(full_input_path, proxies)
 
     if output_file_path:
-        write_proxies_to_file(full_output_path, good_proxies)
+        FileHandler.write_to_file(full_output_path, good_proxies)
     else:
-        write_proxies_to_file(full_input_path, good_proxies)
+        FileHandler.write_to_file(full_input_path, good_proxies)
 
 
 if __name__ == "__main__":
