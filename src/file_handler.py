@@ -1,5 +1,4 @@
-import json
-from src import directory_handler
+import json, os
 
 
 class FileHandler:
@@ -25,17 +24,20 @@ class FileHandler:
         return data["sources"]
 
     @staticmethod
+    def get_full_file_path(file_path, default_directory):
+        return os.path.join(default_directory, file_path)
+
+    @staticmethod
     def handle_file_paths(
         input_file_path,
         output_file_path,
         default_input_directory,
         default_output_directory,
     ):
-        full_input_path = directory_handler.get_full_file_path(
+        full_input_path = FileHandler.get_full_file_path(
             input_file_path, default_input_directory
         )
-        full_output_path = directory_handler.get_full_file_path(
+        full_output_path = FileHandler.get_full_file_path(
             output_file_path, default_output_directory
         )
-
         return full_input_path, full_output_path

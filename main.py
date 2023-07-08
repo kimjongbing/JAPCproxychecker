@@ -1,13 +1,15 @@
 from src.file_handler import FileHandler
-from src.config_handler import handle_config
+from src.config_handler import ConfigHandler
 from src.proxy_handler import handle_proxies
 from src.argparser import parse_args
 
 
 def main(input_file_path, output_file_path, json_file_path):
-    default_input_directory, default_output_directory, proxies = handle_config(
-        json_file_path
-    )
+    (
+        default_input_directory,
+        default_output_directory,
+        proxies,
+    ) = ConfigHandler.handle_config(json_file_path)
     full_input_path, full_output_path = FileHandler.handle_file_paths(
         input_file_path,
         output_file_path,
