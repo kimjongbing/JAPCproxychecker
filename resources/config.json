@@ -1,7 +1,6 @@
 {
     "default_input_directory": "proxyfolder",
     "default_output_directory": "proxyfolder",
-    "default_config_folder": "resources",
     "sources": [
         "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
         "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
