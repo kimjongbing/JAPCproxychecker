@@ -3,12 +3,20 @@ from src import (
     handle_config,
     handle_file_paths,
     write_proxies_to_file,
-    handle_proxies
+    handle_proxies,
 )
 
+
 def main(input_file_path, output_file_path, json_file_path):
-    default_input_directory, default_output_directory, proxies = handle_config(json_file_path)
-    full_input_path, full_output_path = handle_file_paths(input_file_path, output_file_path, default_input_directory, default_output_directory)
+    default_input_directory, default_output_directory, proxies = handle_config(
+        json_file_path
+    )
+    full_input_path, full_output_path = handle_file_paths(
+        input_file_path,
+        output_file_path,
+        default_input_directory,
+        default_output_directory,
+    )
     good_proxies = handle_proxies(full_input_path, proxies)
 
     if output_file_path:

@@ -1,5 +1,6 @@
 import argparse
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Process files")
     parser.add_argument(
@@ -22,6 +23,6 @@ def parse_args():
         "--proxy_sources_file",
         dest="json_file_path",
         default=None,
-        help="Json file that has the proxy sources urls"
+        help="Json file that has the proxy sources urls",
     )
     return parser.parse_args()
