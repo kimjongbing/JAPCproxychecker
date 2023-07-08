@@ -25,4 +25,12 @@ def parse_args():
         default=None,
         help="Json file that has the proxy sources urls",
     )
+
+    parser.add_argument(
+        "-s",
+        "--scheme",
+        dest="proxy_scheme",
+        default=None,
+        help="Scheme to use for the proxies. If specified only this scheme is used. If not specified, every scheme will be attempted per proxy.",
+    )
     return parser.parse_args()

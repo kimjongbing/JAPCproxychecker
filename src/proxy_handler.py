@@ -5,13 +5,12 @@ from src.file_handler import FileHandler
 
 
 class ProxyHandler:
-
     @staticmethod
-    def handle_proxies(full_input_path, proxies):
+    def handle_proxies(full_input_path, proxies, scheme=None):
         if not proxies:
             proxies = FileHandler.read_from_file(full_input_path)
 
-        checker = ProxyChecker(proxies)
+        checker = ProxyChecker(proxies, scheme)
         good_proxies = checker.filter_proxies()
 
         return good_proxies
@@ -21,7 +20,7 @@ class ProxyHandler:
         async with session.get(url) as response:
             text = await response.text()
             return text.splitlines()
-        
+
     @staticmethod
     async def fetch_proxies_from_urls(urls):
         async with aiohttp.ClientSession() as session:
@@ -31,8 +30,7 @@ class ProxyHandler:
                 ),
                 [],
             )
-    
-    @staticmethod 
+
+    @staticmethod
     def fetch_proxies(url):
         return asyncio.run(ProxyHandler.fetch_proxies_from_urls(url))
-

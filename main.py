@@ -4,7 +4,7 @@ from src.proxy_handler import ProxyHandler
 from src.argparser import parse_args
 
 
-def main(input_file_path, output_file_path, json_file_path):
+def main(input_file_path, output_file_path, json_file_path, proxy_scheme):
     (
         default_input_directory,
         default_output_directory,
@@ -16,7 +16,7 @@ def main(input_file_path, output_file_path, json_file_path):
         default_input_directory,
         default_output_directory,
     )
-    good_proxies = ProxyHandler.handle_proxies(full_input_path, proxies)
+    good_proxies = ProxyHandler.handle_proxies(full_input_path, proxies, proxy_scheme)
 
     if output_file_path:
         FileHandler.write_to_file(full_output_path, good_proxies)
@@ -26,4 +26,9 @@ def main(input_file_path, output_file_path, json_file_path):
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.input_file_path, args.output_file_path, args.json_file_path)
+    main(
+        args.input_file_path,
+        args.output_file_path,
+        args.json_file_path,
+        args.proxy_scheme,
+    )
