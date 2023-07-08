@@ -1,6 +1,6 @@
 from src.file_handler import FileHandler
 from src.config_handler import ConfigHandler
-from src.proxy_handler import handle_proxies
+from src.proxy_handler import ProxyHandler
 from src.argparser import parse_args
 
 
@@ -16,7 +16,7 @@ def main(input_file_path, output_file_path, json_file_path):
         default_input_directory,
         default_output_directory,
     )
-    good_proxies = handle_proxies(full_input_path, proxies)
+    good_proxies = ProxyHandler.handle_proxies(full_input_path, proxies)
 
     if output_file_path:
         FileHandler.write_to_file(full_output_path, good_proxies)
