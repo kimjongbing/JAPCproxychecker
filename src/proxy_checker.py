@@ -104,8 +104,8 @@ class ProxyChecker:
                     self.update_progress_bar(pbar)
         return working_proxies
 
-    @staticmethod
-    def handle_exception(proxy, exc):
+    @classmethod
+    def handle_exception(cls, proxy, exc):
         if not error_logger.hasHandlers():
             error_file_handler = logging.FileHandler("error.log")
             error_formatter = logging.Formatter(
