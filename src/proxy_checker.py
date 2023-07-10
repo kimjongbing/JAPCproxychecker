@@ -35,7 +35,7 @@ class ProxyChecker:
         return proxy if parsed_proxy.scheme else scheme + proxy
 
     def get_response(self, formatted_proxy):
-        proxies = {"http": formatted_proxy, "https": formatted_proxy, "server_hostname": TARGET_URL}
+        proxies = {"http": formatted_proxy, "https": formatted_proxy}
         try:
             return requests.get(TARGET_URL, proxies=proxies, timeout=REQUEST_TIMEOUT)
         except (
