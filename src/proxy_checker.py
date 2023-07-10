@@ -35,7 +35,7 @@ class ProxyChecker:
         return proxy if parsed_proxy.scheme else scheme + proxy
 
     def get_response(self, formatted_proxy):
-        proxies = {"http": formatted_proxy, "https": formatted_proxy}
+        proxies = {"http": formatted_proxy, "https": formatted_proxy, "server_hostname": TARGET_URL}
         try:
             return requests.get(TARGET_URL, proxies=proxies, timeout=REQUEST_TIMEOUT)
         except (
@@ -83,19 +83,36 @@ class ProxyChecker:
 
     def filter_proxies(self):
         requests.packages.urllib3.disable_warnings()
-        working_proxies = []
+        pbar = ProgressBar(self.total_proxies)
+
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             future_to_proxy = {
                 executor.submit(self.check_proxy, proxy): proxy
                 for proxy in self.proxies
             }
 
-            pbar = ProgressBar(self.total_proxies)
             for future in concurrent.futures.as_completed(future_to_proxy):
-                self.process_future(future, future_to_proxy, working_proxies)
-                pbar.update(self.counter)
+                proxy = future_to_proxy[future]
+                try:
+                    if future.result():
+                        self.counter.increment("Succeeded")
+                        pbar.update("Succeeded")
+                    else:
+                        self.counter.increment("Failed")
+                        pbar.update("Failed")
 
-            return working_proxies
+                except Exception as exc:
+                    self.handle_exception(proxy, exc)
+                    self.counter.increment("Failed")
+                    pbar.update("Failed")
+                finally:
+                    pbar.update("Checked")
+
+        pbar.close()
+        working_proxies = [
+            proxy for future, proxy in future_to_proxy.items() if future.result()
+        ]
+        return working_proxies
 
     @classmethod
     def handle_exception(cls, proxy, exc):
