@@ -43,6 +43,7 @@ class ProxyChecker:
             requests.exceptions.ConnectTimeout,
             requests.exceptions.ReadTimeout,
             requests.exceptions.SSLError,
+            ValueError,
         ):
             return None
 
