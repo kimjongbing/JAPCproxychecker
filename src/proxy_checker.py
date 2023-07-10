@@ -59,11 +59,11 @@ class ProxyChecker:
             response = self.get_response(formatted_proxy)
 
             if response is not None and response.status_code == 200:
-                self.counter["Succeeded"] += 1
+                self.counter.increment("Succeeded")
                 return proxy
 
         else:
-            self.counter["Failed"] += 1
+            self.counter.increment("Failed")
             return None
 
     def process_future(self, future, future_to_proxy, working_proxies):
@@ -72,23 +72,22 @@ class ProxyChecker:
             data = future.result()
         except Exception as exc:
             self.handle_exception(proxy, exc)
-            self.counter["Failed"] += 1
         else:
             if data is not None:
                 working_proxies.append(data)
-                self.counter["Succeeded"] += 1
             else:
-                self.counter["Failed"] += 1
-        self.counter["Checked"] += 1
+                if data is not None:
+                    working_proxies.append(data)
+        finally:
+            self.counter.increment("Checked")
 
     def update_progress_bar(self, pbar):
-        pbar.set_postfix(self.counter, refresh=True)
+        pbar.set_postfix(self.counter.values(), refresh=True)
         pbar.update(1)
 
     def filter_proxies(self):
         requests.packages.urllib3.disable_warnings()
         working_proxies = []
-        self.counter = {"Checked": 0, "Succeeded": 0, "Failed": 0}
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             future_to_proxy = {
                 executor.submit(self.check_proxy, proxy): proxy
@@ -98,7 +97,7 @@ class ProxyChecker:
             with tqdm(
                 total=self.total_proxies, bar_format="{l_bar}{bar}| {postfix}"
             ) as pbar:
-                pbar.set_postfix(self.counter, refresh=True)
+                pbar.set_postfix(self.counter.values(), refresh=True)
                 for future in concurrent.futures.as_completed(future_to_proxy):
                     self.process_future(future, future_to_proxy, working_proxies)
                     self.update_progress_bar(pbar)

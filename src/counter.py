@@ -3,13 +3,17 @@ import threading
 
 class Counter:
     def __init__(self):
-        self.val = 0
+        self.vals = {"Checked": 0, "Succeeded": 0, "Failed": 0}
         self._lock = threading.Lock()
 
-    def increment(self):
+    def increment(self, key):
         with self._lock:
-            self.val += 1
+            self.vals[key] += 1
 
-    def value(self):
+    def value(self, key):
         with self._lock:
-            return self.val
+            return self.val[key]
+
+    def values(self):
+        with self._lock:
+            return self.vals.copy()
