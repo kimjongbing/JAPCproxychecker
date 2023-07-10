@@ -3,11 +3,7 @@ import concurrent.futures
 import logging
 from urllib.parse import urlparse
 from .counter import Counter
-from colorama import (
-    Fore,
-    Style,
-)  # will probably use at some point to colorize some text
-from tqdm import tqdm
+from .progress_bar import ProgressBar
 
 
 DEFAULT_SCHEMES = ["http://", "https://", "socks5://", "socks4://"]
@@ -94,14 +90,12 @@ class ProxyChecker:
                 for proxy in self.proxies
             }
 
-            with tqdm(
-                total=self.total_proxies, bar_format="{l_bar}{bar}| {postfix}"
-            ) as pbar:
-                pbar.set_postfix(self.counter.values(), refresh=True)
-                for future in concurrent.futures.as_completed(future_to_proxy):
-                    self.process_future(future, future_to_proxy, working_proxies)
-                    self.update_progress_bar(pbar)
-        return working_proxies
+            pbar = ProgressBar(self.total_proxies)
+            for future in concurrent.futures.as_completed(future_to_proxy):
+                self.process_future(future, future_to_proxy, working_proxies)
+                pbar.update(self.counter)
+
+            return working_proxies
 
     @classmethod
     def handle_exception(cls, proxy, exc):
